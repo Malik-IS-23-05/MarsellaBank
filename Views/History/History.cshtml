@@ -1,0 +1,72 @@
+﻿@model List<Transaction>
+@{
+    ViewData["Title"] = "История переводов";
+}
+
+<div class="transaction-history">
+    <h1>История переводов</h1>
+
+    <table class="transactions">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Отправитель</th>
+                <th>Получатель</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model)
+            {
+                <tr>
+                    <td>@transaction.Date.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@transaction.FromCard.Number</td>
+                    <td>@transaction.ToCard.Number</td>
+                    <td>@transaction.Amount.ToString("C")</td>
+                    <td>✅ Успешно</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .transaction-history {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .transactions {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .transactions th, .transactions td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .transactions th {
+            background-color: #2c3e50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        .transactions tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .transactions td:nth-child(4) {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .transactions td:nth-child(5) {
+            color: #27ae60;
+        }
+</style>

@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Marsella Bank</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+            .nav-links a, .nav-links button {
+                color: white;
+                text-decoration: none;
+                font-size: 1rem;
+                transition: color 0.3s;
+            }
+
+                .nav-links a:hover {
+                    color: #3498db;
+                }
+
+            .nav-links button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 1rem;
+            }
+
+                .nav-links button:hover {
+                    color: #e74c3c;
+                }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        /* Auth Status */
+        .auth-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .auth-status span {
+                font-size: 0.9rem;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a asp-controller="Home" asp-action="Index" class="logo">Marsella Bank</a>
+                <div class="nav-links">
+                    <a asp-controller="Home" asp-action="About">О банке</a>
+
+                    @if (Context.Session.GetString("Auth_UserEmail") != null)
+                    {
+                        <a asp-controller="Account" asp-action="Dashboard">Личный кабинет</a>
+                        <a asp-controller="Transaction" asp-action="Transfer">Перевод</a>
+                        <!-- Добавить рядом с другими ссылками -->
+                        <a asp-controller="History" asp-action="History">История переводов</a>
+                        <div class="auth-status">
+                            <span>@Context.Session.GetString("Auth_UserEmail")</span>
+                            <form asp-controller="Auth" asp-action="Logout" method="post">
+                                <button type="submit">Выход</button>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Auth" asp-action="Login">Вход</a>
+                        <a asp-controller="Auth" asp-action="Register">Регистрация</a>
+                    }
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <div class="container">
+            &copy; @DateTime.Now.Year - Marsella Bank (Учебный проект)
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
